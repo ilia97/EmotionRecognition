@@ -1,52 +1,110 @@
-﻿using FaceRecognition.BL.Interfaces;
-using IronPython.Hosting;
+﻿using FaceRecognition.Models.Enums;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
+using System.Threading.Tasks;
 
 namespace FaceRecognition.BL
 {
-    public abstract class NeuaralNetworkStrategy : INeuralNetworkStrategy
-    {
-        private const string imageName = "C:\\Program Files\\Python36\\Lib\\site-packages\\EmoPy\\examples\\image_data\\image.png";
+	public abstract class NeuaralNetworkStrategy
+	{
+		private static string pathToExamplesFolder = @"\EmoPy-master\EmoPy\examples\";
+		private static string pathToFermodelExample = GetFullPath(Path.Combine(pathToExamplesFolder, "fermodel_example.py"));
+		private readonly Dictionary<NeuralNetworkType, string> recognitionAlgorithmsExecutables = new Dictionary<NeuralNetworkType, string>
+		{
+			[NeuralNetworkType.Convolutional] = GetFullPath(Path.Combine(pathToExamplesFolder, "convolutional_model.py")),
+			[NeuralNetworkType.TimeDelayConv] = GetFullPath(Path.Combine(pathToExamplesFolder, "timedelay_conv_model.py")),
+			[NeuralNetworkType.ConvolutionalLstm] = GetFullPath(Path.Combine(pathToExamplesFolder, "convolutional_lstm_model.py")),
+			[NeuralNetworkType.TransferLearning] = GetFullPath(Path.Combine(pathToExamplesFolder, "transferlearning_model.py"))
+		};
 
-        public string Recognize(byte[] image)
-        {
-            this.SaveImage(image);
 
-            var p = new Process();
-            // Redirect the output stream of the child process.
-            p.StartInfo.UseShellExecute = false;
-            p.StartInfo.RedirectStandardOutput = true;
-            p.StartInfo.FileName = "fermodel_example.cmd";
-            p.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
+		public async Task Train(string dataSourcePath, bool isCsv, bool isImageFolder, string outputModelPath, Action<string> outputWriter)
+		{
+			await Task.Run(() =>
+			{
+				var p = new Process();
+				p.StartInfo.UseShellExecute = false;
+				p.StartInfo.RedirectStandardOutput = true;
+				p.StartInfo.RedirectStandardError = true;
+				p.OutputDataReceived += (sender, args) => outputWriter(args.Data);
+				p.ErrorDataReceived += (sender, args) => outputWriter(args.Data);
+				p.StartInfo.RedirectStandardInput = true;
+				p.StartInfo.FileName = "cmd.exe";
+				p.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
+				p.StartInfo.CreateNoWindow = true;
 
-            p.Start();
-            // Do not wait for the child process to exit before
-            // reading to the end of its redirected stream.
-            p.WaitForExit();
-            // Read the output stream first and then wait.
-            string output = p.StandardOutput.ReadToEnd();
+				p.Start();
 
-            output = output.Substring(output.IndexOf("Initializing"));
+				p.BeginOutputReadLine();
+				p.BeginErrorReadLine();
 
-            return output;
-        }
+				var currentDir = AppDomain.CurrentDomain.BaseDirectory;
+				string drive = currentDir[0].ToString();
+				p.StandardInput.WriteLine($"{drive}:");
 
-        private void SaveImage(byte[] bytes)
-        {
-            if (File.Exists(imageName))
-            {
-                File.Delete(imageName);
-            }
+				p.StandardInput.WriteLine($"cd {GetFullPath(@"EmoPy-master\venv1\Scripts")}");
 
-            var stream = new MemoryStream(bytes);
+				p.StandardInput.WriteLine($"activate");
 
-            var image = Image.FromStream(stream);
+				// Execution of pythin script. Put your code here
+				p.StandardInput.WriteLine($"python {pathToFermodelExample}");
 
-            image.Save(imageName, ImageFormat.Png);
-        }
-    }
+				p.StandardInput.WriteLine($"deactivate");
+
+				p.StandardInput.Flush();
+				p.StandardInput.Close();
+
+				p.WaitForExit();
+			});
+		}
+
+		public async Task Recognize(string trainedModelPath, string imagePath, string emotionsSubset, Action<string> outputWriter)
+		{
+			await Task.Run(() =>
+			{
+				var p = new Process();
+				p.StartInfo.UseShellExecute = false;
+				p.StartInfo.RedirectStandardOutput = true;
+				p.StartInfo.RedirectStandardError = true;
+				p.OutputDataReceived += (sender, args) => outputWriter(args.Data);
+				p.ErrorDataReceived += (sender, args) => outputWriter(args.Data);
+				p.StartInfo.RedirectStandardInput = true;
+				p.StartInfo.FileName = "cmd.exe";
+				p.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
+				p.StartInfo.CreateNoWindow = true;
+
+				p.Start();
+
+				p.BeginOutputReadLine();
+				p.BeginErrorReadLine();
+
+				var currentDir = AppDomain.CurrentDomain.BaseDirectory;
+				string drive = currentDir[0].ToString();
+				p.StandardInput.WriteLine($"{drive}:");
+
+				p.StandardInput.WriteLine($"cd {GetFullPath(@"EmoPy-master\venv1\Scripts")}");
+
+				p.StandardInput.WriteLine($"activate");
+
+				// Execution of pythin script. Put your code here
+				p.StandardInput.WriteLine($"python {pathToFermodelExample}");
+
+				p.StandardInput.WriteLine($"deactivate");
+
+				p.StandardInput.Flush();
+				p.StandardInput.Close();
+
+				p.WaitForExit();
+			});
+		}
+
+		private static string GetFullPath(string relativePath)
+		{
+			return Path.Combine(AppDomain.CurrentDomain.BaseDirectory, relativePath.TrimStart('\\', '/'));
+		}
+	}
 }
