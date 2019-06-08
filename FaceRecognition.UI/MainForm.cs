@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Windows.Forms;
 using FaceRecognition.BL;
@@ -14,6 +15,8 @@ namespace FaceRecognition.UI
 {
 	public partial class MainForm : Form
 	{
+		private static Regex CmdFilter = new Regex(@"\w:\\.*>", RegexOptions.Compiled);
+
 		private readonly Dictionary<NeuralNetworkType, NeuaralNetworkStrategy> recognitionAlgorithms = new Dictionary<NeuralNetworkType, NeuaralNetworkStrategy>()
 		{
 			{ NeuralNetworkType.Convolutional, new ConvolutionalNNStrategy() },
@@ -159,7 +162,11 @@ namespace FaceRecognition.UI
 				{
 					this.MainThread.Post(new SendOrPostCallback(o =>
 					{
-						this.richTextBox1.Text += $"{(string)o} \n";
+						var newLine = (string)o;
+						if (!string.IsNullOrEmpty(newLine) && !CmdFilter.IsMatch(newLine))
+						{
+							this.richTextBox1.Text += $"{newLine} \n";
+						}
 					}), 
 					line);
 				});
@@ -216,7 +223,11 @@ namespace FaceRecognition.UI
 				{
 					this.MainThread.Post(new SendOrPostCallback(o =>
 					{
-						this.richTextBox2.Text += $"{(string)o} \n";
+						var newLine = (string)o;
+						if (!string.IsNullOrEmpty(newLine) && !CmdFilter.IsMatch(newLine))
+						{
+							this.richTextBox2.Text += $"{newLine} \n";
+						}
 					}),
 					line);
 				});
