@@ -100,6 +100,9 @@
 			// 
 			// tabControl1
 			// 
+			this.tabControl1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
 			this.tabControl1.Controls.Add(this.tabPage1);
 			this.tabControl1.Controls.Add(this.tabPage2);
 			this.tabControl1.Location = new System.Drawing.Point(12, 43);
@@ -132,6 +135,9 @@
 			// 
 			// richTextBox1
 			// 
+			this.richTextBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
 			this.richTextBox1.Location = new System.Drawing.Point(359, 34);
 			this.richTextBox1.Name = "richTextBox1";
 			this.richTextBox1.ReadOnly = true;
@@ -294,10 +300,13 @@
 			// 
 			// richTextBox2
 			// 
+			this.richTextBox2.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
 			this.richTextBox2.Location = new System.Drawing.Point(353, 51);
 			this.richTextBox2.Name = "richTextBox2";
 			this.richTextBox2.ReadOnly = true;
-			this.richTextBox2.Size = new System.Drawing.Size(417, 381);
+			this.richTextBox2.Size = new System.Drawing.Size(419, 381);
 			this.richTextBox2.TabIndex = 23;
 			this.richTextBox2.Text = "";
 			// 
@@ -355,6 +364,7 @@
 			// 
 			// label11
 			// 
+			this.label11.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this.label11.AutoSize = true;
 			this.label11.Location = new System.Drawing.Point(443, 9);
 			this.label11.Name = "label11";
@@ -364,6 +374,7 @@
 			// 
 			// textBox7
 			// 
+			this.textBox7.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this.textBox7.Location = new System.Drawing.Point(488, 6);
 			this.textBox7.Name = "textBox7";
 			this.textBox7.Size = new System.Drawing.Size(321, 20);
@@ -372,6 +383,7 @@
 			// 
 			// label13
 			// 
+			this.label13.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
 			this.label13.AutoSize = true;
 			this.label13.Location = new System.Drawing.Point(13, 532);
 			this.label13.Name = "label13";
@@ -381,6 +393,7 @@
 			// 
 			// label14
 			// 
+			this.label14.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
 			this.label14.AutoSize = true;
 			this.label14.Location = new System.Drawing.Point(13, 550);
 			this.label14.Name = "label14";
@@ -401,6 +414,7 @@
 			this.Controls.Add(this.textBox5);
 			this.Controls.Add(this.tabControl1);
 			this.Margin = new System.Windows.Forms.Padding(1);
+			this.MinimumSize = new System.Drawing.Size(837, 614);
 			this.Name = "MainForm";
 			this.Text = "Emotion Recognition";
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
