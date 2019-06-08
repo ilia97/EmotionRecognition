@@ -41,17 +41,17 @@ namespace FaceRecognition.UI
 		private string dataSourcePath;
 		private string outputModelPath;
 
-		private Dictionary<string, string> supportedEmotionsSubsets = new Dictionary<string, string>
+		private Dictionary<string, string[]> supportedEmotionsSubsets = new Dictionary<string, string[]>
 		{
-			["anger, fear, surprise, calm"] = "anger, fear, surprise, calm",    // new[] { "anger", "fear", "surprise", "calm" },
-			["happiness, disgust, surprise"] = "happiness, disgust, surprise",  //new[] { "happiness", "disgust", "surprise" },
-			["anger, fear, surprise"] = "anger, fear, surprise",            // new[] { "anger", "fear", "surprise" },
-			["anger, fear, calm"] = "anger, fear, calm",                // new[] { "anger", "fear", "calm" },
-			["anger, happiness, calm"] = "anger, happiness, calm",      // new[] { "anger", "happiness", "calm" },
-			["anger, fear, disgust"] = "anger, fear, disgust",          // new[] { "anger", "fear", "disgust" },
-			["calm, disgust, surprise"] = "calm, disgust, surprise",        // new[] { "calm", "disgust", "surprise" },
-			["sadness, disgust, surprise"] = "sadness, disgust, surprise",  // new[] { "sadness", "disgust", "surprise" },
-			["anger, happiness"] = "anger, happiness"               // new[] { "anger", "happiness" }
+			["anger, fear, surprise, calm"]		= new[] { "anger", "fear", "surprise", "calm" },  // "anger,fear,surprise,calm",		// 
+			["happiness, disgust, surprise"]	= new[] { "happiness", "disgust", "surprise" },	  // "happiness,disgust,surprise",		// 
+			["anger, fear, surprise"]			= new[] { "anger", "fear", "surprise" },		  // "anger,fear,surprise",            // 
+			["anger, fear, calm"]				= new[] { "anger", "fear", "calm" },			  // "anger,fear, calm",               // 
+			["anger, happiness, calm"]			= new[] { "anger", "happiness", "calm" },		  // "anger, happiness, calm",			// 
+			["anger, fear, disgust"]			= new[] { "anger", "fear", "disgust" },			  // "anger, fear, disgust",			// 
+			["calm, disgust, surprise"]			= new[] { "calm", "disgust", "surprise" },		  // "calm, disgust, surprise",        // 
+			["sadness, disgust, surprise"]		= new[] { "sadness", "disgust", "surprise" },	  // "sadness, disgust, surprise",		// 
+			["anger, happiness"]				= new[] { "anger", "happiness" }                  // "anger, happiness"				// 
 		};
 
 		// Prediction Info
@@ -89,10 +89,13 @@ namespace FaceRecognition.UI
 			comboBox2.DisplayMember = "Text";
 			comboBox2.ValueMember = "Value";
 			comboBox2.DataSource = supportedEmotionsSubsets
-				.Select(kvp => new ComboBoxItem() { Text = kvp.Key, Value = kvp.Value })
+				.Select(kvp => new ComboBoxItem() { Text = kvp.Key, Value = string.Join(",", kvp.Value) })
 				.ToList();
 
 			radioButton2.Checked = true;
+
+			this.label13.Text += " " + this.recognitionAlgorithms[NeuralNetworkType.Convolutional].GetPythonExeFullPath();
+			this.label14.Text += " " + this.recognitionAlgorithms[NeuralNetworkType.Convolutional].GetEmoPyExamplesFolderFullPath();
 		}
 
 		// Training controls
