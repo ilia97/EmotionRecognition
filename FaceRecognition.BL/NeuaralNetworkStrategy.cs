@@ -100,7 +100,7 @@ namespace FaceRecognition.BL
 
 		public string GetPythonExeFullPath()
 		{
-			return Environment.GetEnvironmentVariable("PYTHON_PATH") ?? "[ENV VARIABLE NOT SPECIFIED]"; // return "python";
+			return Path.Combine(Environment.GetEnvironmentVariable("EMOPY_PYTHON_PATH") ?? "[ENV VARIABLE NOT SPECIFIED]", "python.exe"); // return "python";
 		}
 
 		public string GetEmoPyExamplesFolderFullPath()

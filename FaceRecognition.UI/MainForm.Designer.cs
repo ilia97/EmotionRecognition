@@ -73,7 +73,7 @@
 			this.button1.Name = "button1";
 			this.button1.Size = new System.Drawing.Size(299, 35);
 			this.button1.TabIndex = 0;
-			this.button1.Text = "Predict";
+			this.button1.Text = "Recognize";
 			this.button1.UseVisualStyleBackColor = true;
 			this.button1.Click += new System.EventHandler(this.button1_Click);
 			// 
@@ -268,7 +268,7 @@
 			this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
 			this.tabPage2.Size = new System.Drawing.Size(789, 456);
 			this.tabPage2.TabIndex = 1;
-			this.tabPage2.Text = "Prediction";
+			this.tabPage2.Text = "Recognition";
 			this.tabPage2.UseVisualStyleBackColor = true;
 			// 
 			// label12

@@ -152,7 +152,7 @@ namespace FaceRecognition.UI
 
 			var selectedNeuralNetwork = (ComboBoxItem)comboBox1.SelectedItem;
 
-			this.richTextBox1.Text = "";
+			this.richTextBox1.Text = "---------- TRAINING STARTED ----------";
 			await recognitionAlgorithms[(NeuralNetworkType)selectedNeuralNetwork.Value].Train(
 				this.dataSourcePath,
 				this.isCsvDataSource,
@@ -171,6 +171,7 @@ namespace FaceRecognition.UI
 					line);
 				});
 
+			this.richTextBox1.Text += "---------- TRAINING FINISHED ----------";
 		}
 
 		// Prediction controls
@@ -214,7 +215,7 @@ namespace FaceRecognition.UI
 
 			var imagePath = GetImagePath(pictureBox1.Image);
 
-			this.richTextBox2.Text = "";
+			this.richTextBox2.Text = "---------- RECOGNITION STARTED ----------";
 			await recognitionAlgorithms[(NeuralNetworkType)selectedNeuralNetwork.Value].Recognize(
 				this.trainedModelPath,
 				imagePath,
@@ -231,6 +232,8 @@ namespace FaceRecognition.UI
 					}),
 					line);
 				});
+                
+			this.richTextBox2.Text = "---------- RECOGNITION FINISHED ----------";
 		}
 
 		private string GetImagePath(Image image)
