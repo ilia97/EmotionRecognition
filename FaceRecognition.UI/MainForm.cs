@@ -250,5 +250,47 @@ namespace FaceRecognition.UI
 				}
 			}
 		}
+
+		private void Button3_Click(object sender, EventArgs e)
+		{
+			using (FolderBrowserDialog dlg = new FolderBrowserDialog())
+			{
+				dlg.ShowNewFolderButton = true;
+				dlg.Description = "Select data source directory";
+
+				if (dlg.ShowDialog() == DialogResult.OK)
+				{
+					this.textBox2.Text = dlg.SelectedPath;
+				}
+			}
+		}
+
+		private void Button4_Click(object sender, EventArgs e)
+		{
+			using (FolderBrowserDialog dlg = new FolderBrowserDialog())
+			{
+				dlg.ShowNewFolderButton = true;
+				dlg.Description = "Select output folder for trained model";
+
+				if (dlg.ShowDialog() == DialogResult.OK)
+				{
+					this.textBox3.Text = dlg.SelectedPath;
+				}
+			}
+		}
+
+		private void Button5_Click(object sender, EventArgs e)
+		{
+			using (FolderBrowserDialog dlg = new FolderBrowserDialog())
+			{
+				dlg.ShowNewFolderButton = false;
+				dlg.Description = "Select folder with trained model";
+
+				if (dlg.ShowDialog() == DialogResult.OK)
+				{
+					this.textBox4.Text = dlg.SelectedPath;
+				}
+			}
+		}
 	}
 }
