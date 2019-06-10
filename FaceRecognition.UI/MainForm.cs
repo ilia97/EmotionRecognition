@@ -246,7 +246,10 @@ namespace FaceRecognition.UI
 
 				if (dlg.ShowDialog() == DialogResult.OK)
 				{
-					pictureBox1.Image = new Bitmap(dlg.FileName);
+					using (Image image = Image.FromFile(dlg.FileName))
+					{
+						pictureBox1.Image = new Bitmap(image, 320, 245);
+					}
 				}
 			}
 		}
