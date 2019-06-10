@@ -569,7 +569,7 @@
 			this.flowLayoutPanel1.Controls.Add(this.label22);
 			this.flowLayoutPanel1.Controls.Add(this.label16);
 			this.flowLayoutPanel1.FlowDirection = System.Windows.Forms.FlowDirection.RightToLeft;
-			this.flowLayoutPanel1.Location = new System.Drawing.Point(12, 4);
+			this.flowLayoutPanel1.Location = new System.Drawing.Point(12, 9);
 			this.flowLayoutPanel1.Name = "flowLayoutPanel1";
 			this.flowLayoutPanel1.Size = new System.Drawing.Size(906, 20);
 			this.flowLayoutPanel1.TabIndex = 31;
@@ -580,7 +580,7 @@
 			this.flowLayoutPanel2.Controls.Add(this.label21);
 			this.flowLayoutPanel2.Controls.Add(this.label15);
 			this.flowLayoutPanel2.FlowDirection = System.Windows.Forms.FlowDirection.RightToLeft;
-			this.flowLayoutPanel2.Location = new System.Drawing.Point(12, 27);
+			this.flowLayoutPanel2.Location = new System.Drawing.Point(12, 32);
 			this.flowLayoutPanel2.Name = "flowLayoutPanel2";
 			this.flowLayoutPanel2.Size = new System.Drawing.Size(906, 20);
 			this.flowLayoutPanel2.TabIndex = 32;
@@ -604,9 +604,11 @@
 			this.Controls.Add(this.flowLayoutPanel2);
 			this.Controls.Add(this.flowLayoutPanel1);
 			this.Controls.Add(this.tabControl1);
+			this.Location = new System.Drawing.Point(50, 50);
 			this.Margin = new System.Windows.Forms.Padding(1);
 			this.MinimumSize = new System.Drawing.Size(837, 614);
 			this.Name = "MainForm";
+			this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
 			this.Text = "Emotion Recognition";
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
 			this.tabControl1.ResumeLayout(false);

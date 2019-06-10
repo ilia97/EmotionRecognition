@@ -137,26 +137,28 @@ namespace FaceRecognition.UI
 		private void RadioButton1_CheckedChanged(object sender, EventArgs e)
 		{
 			this.isCsvDataSource = radioButton1.Checked;
+			this.textBox2.Text = "";
 		}
 
 		private void RadioButton2_CheckedChanged(object sender, EventArgs e)
 		{
 			this.isImageFolderDataSource = radioButton2.Checked;
+			this.textBox2.Text = "";
 		}
 
 
 		private async void Button2_Click(object sender, EventArgs e)
 		{
-			if (string.IsNullOrEmpty(this.dataSourcePath))
+			if (string.IsNullOrEmpty(this.dataSourcePath) || !IsDataSourceExist())
 			{
-				MessageBox.Show("Please specify data source path.");
+				MessageBox.Show("Please specify existing data source path.");
 
 				return;
 			}
 
-			if (string.IsNullOrEmpty(this.outputModelPath))
+			if (string.IsNullOrEmpty(this.outputModelPath) || !Directory.Exists(this.outputModelPath))
 			{
-				MessageBox.Show("Please specify output model path.");
+				MessageBox.Show("Please specify existing output model path.");
 
 				return;
 			}
@@ -179,6 +181,21 @@ namespace FaceRecognition.UI
 			this.button2.Enabled = true;
 		}
 
+		private bool IsDataSourceExist()
+		{
+			if (this.isCsvDataSource)
+			{
+				return File.Exists(this.dataSourcePath);
+			}
+
+			if (this.isImageFolderDataSource)
+			{
+				return Directory.Exists(this.dataSourcePath);
+			}
+
+			return false;
+		}
+
 		// Prediction controls
 
 		private void TextBox4_TextChanged(object sender, EventArgs e)
@@ -188,9 +205,10 @@ namespace FaceRecognition.UI
 
 		private async void button1_Click(object sender, EventArgs e)
 		{
-			if (string.IsNullOrEmpty(this.trainedModelPath))
+			string trainedModelPathValidationError = GetTrainedModelPathValidationError();
+			if (!string.IsNullOrEmpty(trainedModelPathValidationError))
 			{
-				MessageBox.Show("Please specify trained model path.");
+				MessageBox.Show(trainedModelPathValidationError);
 
 				return;
 			}
@@ -235,6 +253,16 @@ namespace FaceRecognition.UI
 			this.button1.Enabled = true;
 		}
 
+		private string GetTrainedModelPathValidationError()
+		{
+			if (string.IsNullOrEmpty(this.trainedModelPath) || !Directory.Exists(this.trainedModelPath))
+			{
+				return "Please specify existing trained model path.";
+			}
+
+			return string.Empty;
+		}
+
 		private string GetImagePath(Image image)
 		{
 			if (File.Exists(imageToPredict))
@@ -268,14 +296,31 @@ namespace FaceRecognition.UI
 
 		private void Button3_Click(object sender, EventArgs e)
 		{
-			using (FolderBrowserDialog dlg = new FolderBrowserDialog())
+			if (this.isImageFolderDataSource)
 			{
-				dlg.ShowNewFolderButton = true;
-				dlg.Description = "Select data source directory";
-
-				if (dlg.ShowDialog() == DialogResult.OK)
+				using (FolderBrowserDialog dlg = new FolderBrowserDialog())
 				{
-					this.textBox2.Text = dlg.SelectedPath;
+					dlg.ShowNewFolderButton = true;
+					dlg.Description = "Select data source directory";
+
+					if (dlg.ShowDialog() == DialogResult.OK)
+					{
+						this.textBox2.Text = dlg.SelectedPath;
+					}
+				}
+			}
+
+			if (this.isCsvDataSource)
+			{
+				using (OpenFileDialog dlg = new OpenFileDialog())
+				{
+					dlg.Title = "Select CSV data source";
+					dlg.Filter = "csv files (*.csv)|*.csv";
+
+					if (dlg.ShowDialog() == DialogResult.OK)
+					{
+						this.textBox2.Text = dlg.FileName;
+					}
 				}
 			}
 		}
