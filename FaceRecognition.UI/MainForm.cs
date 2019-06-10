@@ -4,7 +4,6 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
-using System.Text.RegularExpressions;
 using System.Threading;
 using System.Windows.Forms;
 using FaceRecognition.BL;
@@ -15,7 +14,8 @@ namespace FaceRecognition.UI
 {
 	public partial class MainForm : Form
 	{
-		private static Regex CmdFilter = new Regex(@"\w:\\.*>", RegexOptions.Compiled);
+		private OutputWriter TrainingOutputWriter;
+		private OutputWriter RecognitionOutputWriter;
 
 		private readonly Dictionary<NeuralNetworkType, NeuaralNetworkStrategy> recognitionAlgorithms = new Dictionary<NeuralNetworkType, NeuaralNetworkStrategy>()
 		{
@@ -99,6 +99,9 @@ namespace FaceRecognition.UI
 
 			this.label13.Text += " " + this.recognitionAlgorithms[NeuralNetworkType.Convolutional].GetPythonExeFullPath();
 			this.label14.Text += " " + this.recognitionAlgorithms[NeuralNetworkType.Convolutional].GetEmoPyExamplesFolderFullPath();
+
+			this.TrainingOutputWriter = new OutputWriter(this.richTextBox1);
+			this.RecognitionOutputWriter = new OutputWriter(this.richTextBox2);
 		}
 
 		// Training controls
@@ -152,26 +155,18 @@ namespace FaceRecognition.UI
 
 			var selectedNeuralNetwork = (ComboBoxItem)comboBox1.SelectedItem;
 
-			this.richTextBox1.Text = "---------- TRAINING STARTED ----------";
+			this.button2.Enabled = false;
+			this.TrainingOutputWriter.Clear();
+			this.TrainingOutputWriter.AddLine("---------- TRAINING STARTED ----------");
 			await recognitionAlgorithms[(NeuralNetworkType)selectedNeuralNetwork.Value].Train(
 				this.dataSourcePath,
 				this.isCsvDataSource,
 				this.isImageFolderDataSource,
 				this.outputModelPath,
-				line =>
-				{
-					this.MainThread.Post(new SendOrPostCallback(o =>
-					{
-						var newLine = (string)o;
-						if (!string.IsNullOrEmpty(newLine) && !CmdFilter.IsMatch(newLine))
-						{
-							this.richTextBox1.Text += $"{newLine} \n";
-						}
-					}), 
-					line);
-				});
+				line => this.TrainingOutputWriter.AddLine(line));
 
-			this.richTextBox1.Text += "---------- TRAINING FINISHED ----------";
+			this.TrainingOutputWriter.AddLine("---------- TRAINING FINISHED ----------");
+			this.button2.Enabled = true;
 		}
 
 		// Prediction controls
@@ -215,25 +210,17 @@ namespace FaceRecognition.UI
 
 			var imagePath = GetImagePath(pictureBox1.Image);
 
-			this.richTextBox2.Text = "---------- RECOGNITION STARTED ----------";
+			this.button1.Enabled = false;
+			this.RecognitionOutputWriter.Clear();
+			this.RecognitionOutputWriter.AddLine("---------- RECOGNITION STARTED ----------");
 			await recognitionAlgorithms[(NeuralNetworkType)selectedNeuralNetwork.Value].Recognize(
 				this.trainedModelPath,
 				imagePath,
 				selectedEmotionsSubset.Value as string,
-				line =>
-				{
-					this.MainThread.Post(new SendOrPostCallback(o =>
-					{
-						var newLine = (string)o;
-						if (!string.IsNullOrEmpty(newLine) && !CmdFilter.IsMatch(newLine))
-						{
-							this.richTextBox2.Text += $"{newLine} \n";
-						}
-					}),
-					line);
-				});
-                
-			this.richTextBox2.Text = "---------- RECOGNITION FINISHED ----------";
+				line => this.RecognitionOutputWriter.AddLine(line));
+
+			this.RecognitionOutputWriter.AddLine("---------- RECOGNITION FINISHED ----------");
+			this.button1.Enabled = true;
 		}
 
 		private string GetImagePath(Image image)
