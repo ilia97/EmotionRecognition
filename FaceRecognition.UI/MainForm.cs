@@ -17,6 +17,9 @@ namespace FaceRecognition.UI
 		private OutputWriter TrainingOutputWriter;
 		private OutputWriter RecognitionOutputWriter;
 
+		private TimeRecorder TrainingTimeRecorder;
+		private TimeRecorder RecognitionTimeRecorder;
+
 		private readonly Dictionary<NeuralNetworkType, NeuaralNetworkStrategy> recognitionAlgorithms = new Dictionary<NeuralNetworkType, NeuaralNetworkStrategy>()
 		{
 			{ NeuralNetworkType.Convolutional, new ConvolutionalNNStrategy() },
@@ -102,6 +105,11 @@ namespace FaceRecognition.UI
 
 			this.TrainingOutputWriter = new OutputWriter(this.richTextBox1);
 			this.RecognitionOutputWriter = new OutputWriter(this.richTextBox2);
+			this.TrainingTimeRecorder = new TimeRecorder(this.label18);
+			this.RecognitionTimeRecorder = new TimeRecorder(this.label19);
+
+			this.tabControl1.TabPages.Remove(this.tabPage1);
+			this.tabControl1.TabPages.Remove(this.tabPage2);
 		}
 
 		// Training controls
@@ -157,6 +165,7 @@ namespace FaceRecognition.UI
 
 			this.button2.Enabled = false;
 			this.TrainingOutputWriter.Clear();
+			this.TrainingTimeRecorder.Start();
 			this.TrainingOutputWriter.AddLine("---------- TRAINING STARTED ----------");
 			await recognitionAlgorithms[(NeuralNetworkType)selectedNeuralNetwork.Value].Train(
 				this.dataSourcePath,
@@ -166,6 +175,7 @@ namespace FaceRecognition.UI
 				line => this.TrainingOutputWriter.AddLine(line));
 
 			this.TrainingOutputWriter.AddLine("---------- TRAINING FINISHED ----------");
+			this.TrainingTimeRecorder.Stop();
 			this.button2.Enabled = true;
 		}
 
@@ -212,6 +222,7 @@ namespace FaceRecognition.UI
 
 			this.button1.Enabled = false;
 			this.RecognitionOutputWriter.Clear();
+			this.RecognitionTimeRecorder.Start();
 			this.RecognitionOutputWriter.AddLine("---------- RECOGNITION STARTED ----------");
 			await recognitionAlgorithms[(NeuralNetworkType)selectedNeuralNetwork.Value].Recognize(
 				this.trainedModelPath,
@@ -220,6 +231,7 @@ namespace FaceRecognition.UI
 				line => this.RecognitionOutputWriter.AddLine(line));
 
 			this.RecognitionOutputWriter.AddLine("---------- RECOGNITION FINISHED ----------");
+			this.RecognitionTimeRecorder.Stop();
 			this.button1.Enabled = true;
 		}
 
@@ -294,6 +306,32 @@ namespace FaceRecognition.UI
 					this.textBox4.Text = dlg.SelectedPath;
 				}
 			}
+		}
+
+		private void Button6_Click(object sender, EventArgs e)
+		{
+			if (string.IsNullOrEmpty(this.userName))
+			{
+				MessageBox.Show("Please enter the user name.");
+
+				return;
+			}
+
+			if (string.IsNullOrEmpty(this.userGroup))
+			{
+				MessageBox.Show("Please enter the group name.");
+
+				return;
+			}
+
+			this.label22.Text = this.userName;
+			this.label21.Text = this.userGroup;
+			this.flowLayoutPanel1.Visible = true;
+			this.flowLayoutPanel2.Visible = true;
+
+			this.tabControl1.TabPages.Remove(this.tabPage0);
+			this.tabControl1.TabPages.Add(this.tabPage1);
+			this.tabControl1.TabPages.Add(this.tabPage2);
 		}
 	}
 }
