@@ -73,16 +73,6 @@ namespace FaceRecognition.UI
 
 			this.MainThread = SynchronizationContext.Current;
 
-			nnTypeComboBox.DisplayMember = "Text";
-			nnTypeComboBox.ValueMember = "Value";
-			nnTypeComboBox.DataSource = new List<ComboBoxItem>()
-			{
-				new ComboBoxItem() { Text = "ConvolutionalNN", Value = NeuralNetworkType.Convolutional },
-				new ComboBoxItem() { Text = "TimeDelayConvNN", Value = NeuralNetworkType.TimeDelayConv },
-				new ComboBoxItem() { Text = "ConvolutionalLstmNN", Value = NeuralNetworkType.ConvolutionalLstm },
-				new ComboBoxItem() { Text = "TransferLearningNN", Value = NeuralNetworkType.TransferLearning },
-			};
-
 			comboBox1.DisplayMember = "Text";
 			comboBox1.ValueMember = "Value";
 			comboBox1.DataSource = new List<ComboBoxItem>()
@@ -101,8 +91,8 @@ namespace FaceRecognition.UI
 
 			radioButton2.Checked = true;
 
-			this.label13.Text += " " + this.recognitionAlgorithms[NeuralNetworkType.Convolutional].GetPythonExeFullPath();
-			this.label14.Text += " " + this.recognitionAlgorithms[NeuralNetworkType.Convolutional].GetEmoPyExamplesFolderFullPath();
+			this.label13.Text += " " + NeuaralNetworkStrategy.GetPythonExeFullPath();
+			this.label14.Text += " " + NeuaralNetworkStrategy.GetEmoPyExamplesFolderFullPath();
 
 			this.TrainingOutputWriter = new OutputWriter(this.richTextBox1);
 			this.RecognitionOutputWriter = new OutputWriter(this.richTextBox2);
@@ -221,14 +211,6 @@ namespace FaceRecognition.UI
 				return;
 			}
 
-			var selectedNeuralNetwork = (ComboBoxItem)nnTypeComboBox.SelectedItem;
-			if (selectedNeuralNetwork == null)
-			{
-				MessageBox.Show("Please select any neural network to recognize an image.");
-
-				return;
-			}
-
 			var selectedEmotionsSubset = (ComboBoxItem)comboBox2.SelectedItem;
 			if (selectedEmotionsSubset == null)
 			{
@@ -243,7 +225,7 @@ namespace FaceRecognition.UI
 			this.RecognitionOutputWriter.Clear();
 			this.RecognitionTimeRecorder.Start();
 			this.RecognitionOutputWriter.AddLine("---------- RECOGNITION STARTED ----------");
-			await recognitionAlgorithms[(NeuralNetworkType)selectedNeuralNetwork.Value].Recognize(
+			await NeuaralNetworkStrategy.Recognize(
 				this.trainedModelPath,
 				imagePath,
 				selectedEmotionsSubset.Value as string,

@@ -35,7 +35,7 @@ namespace FaceRecognition.BL
 					//input.WriteLine($"{drive}:");
 					//input.WriteLine($"cd {GetFullPath(@"EmoPy-master\venv1\Scripts")}");
 					//input.WriteLine($"activate");
-					//input.WriteLine($"python {pathToFermodelExample}");
+					//input.WriteLine($"python {GetFullPath(@"EmoPy-master\EmoPy\examples\fermodel_example.py")}");
 					//input.WriteLine($"deactivate");
 
 					// ---- OPTION 2: global packages ----
@@ -44,7 +44,7 @@ namespace FaceRecognition.BL
 				outputWriter);
 		}
 
-		public Task Recognize(string trainedModelPath, string imagePath, string emotionsSubset, Action<string> outputWriter)
+		public static Task Recognize(string trainedModelPath, string imagePath, string emotionsSubset, Action<string> outputWriter)
 		{
 			string pythonPath = GetPythonExeFullPath();
 			string pathToFermodelExample = GetFermodelExampleFullPath();
@@ -60,7 +60,7 @@ namespace FaceRecognition.BL
 					//input.WriteLine($"{drive}:");
 					//input.WriteLine($"cd {GetFullPath(@"EmoPy-master\venv1\Scripts")}");
 					//input.WriteLine($"activate");
-					//input.WriteLine($"python {pathToFermodelExample}");
+					//input.WriteLine($"python {GetFullPath(@"EmoPy-master\EmoPy\examples\fermodel_example.py")}");
 					//input.WriteLine($"deactivate");
 
 					// ---- OPTION 2: global packages ----
@@ -69,7 +69,7 @@ namespace FaceRecognition.BL
 				outputWriter);
 		}
 
-		public Task ExecuteCmdAsync(Action<StreamWriter> inputWriter, Action<string> outputWriter)
+		public static Task ExecuteCmdAsync(Action<StreamWriter> inputWriter, Action<string> outputWriter)
 		{
 			return Task.Run(() =>
 			{
@@ -98,17 +98,17 @@ namespace FaceRecognition.BL
 			});
 		}
 
-		public string GetPythonExeFullPath()
+		public static string GetPythonExeFullPath()
 		{
 			return Path.Combine(Environment.GetEnvironmentVariable("EMOPY_PYTHON_PATH") ?? "[ENV VARIABLE NOT SPECIFIED]", "python.exe"); // return "python";
 		}
 
-		public string GetEmoPyExamplesFolderFullPath()
+		public static string GetEmoPyExamplesFolderFullPath()
 		{
 			return Path.Combine(Environment.GetEnvironmentVariable("EMOPY_PATH") ?? "[ENV VARIABLE NOT SPECIFIED]", "examples"); // GetFullPath(@"\EmoPy -master\EmoPy\examples\");
 		}
 
-		private string GetFermodelExampleFullPath()
+		private static string GetFermodelExampleFullPath()
 		{
 			return Path.Combine(GetEmoPyExamplesFolderFullPath(), "fermodel_example.py");
 		}
@@ -118,9 +118,9 @@ namespace FaceRecognition.BL
 			return Path.Combine(GetEmoPyExamplesFolderFullPath(), this.ScriptFilePath.TrimStart('\\', '/'));
 		}
 
-		//private static string GetFullPath(string relativePath)
-		//{
-		//	return Path.Combine(AppDomain.CurrentDomain.BaseDirectory, relativePath.TrimStart('\\', '/'));
-		//}
+		// private static string GetFullPath(string relativePath)
+		// {
+		// 	return Path.Combine(AppDomain.CurrentDomain.BaseDirectory, relativePath.TrimStart('\\', '/'));
+		// }
 	}
 }

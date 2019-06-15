@@ -29,7 +29,6 @@
         private void InitializeComponent()
         {
 			this.button1 = new System.Windows.Forms.Button();
-			this.nnTypeComboBox = new System.Windows.Forms.ComboBox();
 			this.pictureBox1 = new System.Windows.Forms.PictureBox();
 			this.tabControl1 = new System.Windows.Forms.TabControl();
 			this.tabPage0 = new System.Windows.Forms.TabPage();
@@ -56,6 +55,7 @@
 			this.label1 = new System.Windows.Forms.Label();
 			this.textBox2 = new System.Windows.Forms.TextBox();
 			this.tabPage2 = new System.Windows.Forms.TabPage();
+			this.label23 = new System.Windows.Forms.Label();
 			this.label19 = new System.Windows.Forms.Label();
 			this.label20 = new System.Windows.Forms.Label();
 			this.button5 = new System.Windows.Forms.Button();
@@ -66,7 +66,6 @@
 			this.label6 = new System.Windows.Forms.Label();
 			this.textBox4 = new System.Windows.Forms.TextBox();
 			this.label7 = new System.Windows.Forms.Label();
-			this.label10 = new System.Windows.Forms.Label();
 			this.label13 = new System.Windows.Forms.Label();
 			this.label14 = new System.Windows.Forms.Label();
 			this.label15 = new System.Windows.Forms.Label();
@@ -76,7 +75,7 @@
 			this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
 			this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
 			this.panel1 = new System.Windows.Forms.Panel();
-			this.label23 = new System.Windows.Forms.Label();
+			this.button7 = new System.Windows.Forms.Button();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
 			this.tabControl1.SuspendLayout();
 			this.tabPage0.SuspendLayout();
@@ -89,7 +88,7 @@
 			// 
 			// button1
 			// 
-			this.button1.Location = new System.Drawing.Point(29, 425);
+			this.button1.Location = new System.Drawing.Point(29, 381);
 			this.button1.Margin = new System.Windows.Forms.Padding(1);
 			this.button1.Name = "button1";
 			this.button1.Size = new System.Drawing.Size(320, 35);
@@ -98,22 +97,12 @@
 			this.button1.UseVisualStyleBackColor = true;
 			this.button1.Click += new System.EventHandler(this.button1_Click);
 			// 
-			// nnTypeComboBox
-			// 
-			this.nnTypeComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-			this.nnTypeComboBox.FormattingEnabled = true;
-			this.nnTypeComboBox.Location = new System.Drawing.Point(29, 29);
-			this.nnTypeComboBox.Margin = new System.Windows.Forms.Padding(1);
-			this.nnTypeComboBox.Name = "nnTypeComboBox";
-			this.nnTypeComboBox.Size = new System.Drawing.Size(320, 21);
-			this.nnTypeComboBox.TabIndex = 1;
-			// 
 			// pictureBox1
 			// 
 			this.pictureBox1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
 			this.pictureBox1.Cursor = System.Windows.Forms.Cursors.Hand;
 			this.pictureBox1.InitialImage = null;
-			this.pictureBox1.Location = new System.Drawing.Point(29, 173);
+			this.pictureBox1.Location = new System.Drawing.Point(29, 125);
 			this.pictureBox1.Margin = new System.Windows.Forms.Padding(1);
 			this.pictureBox1.Name = "pictureBox1";
 			this.pictureBox1.Size = new System.Drawing.Size(320, 245);
@@ -198,6 +187,7 @@
 			// 
 			// tabPage1
 			// 
+			this.tabPage1.Controls.Add(this.button7);
 			this.tabPage1.Controls.Add(this.label18);
 			this.tabPage1.Controls.Add(this.label17);
 			this.tabPage1.Controls.Add(this.button4);
@@ -270,7 +260,7 @@
 			this.richTextBox1.Location = new System.Drawing.Point(359, 34);
 			this.richTextBox1.Name = "richTextBox1";
 			this.richTextBox1.ReadOnly = true;
-			this.richTextBox1.Size = new System.Drawing.Size(526, 452);
+			this.richTextBox1.Size = new System.Drawing.Size(526, 424);
 			this.richTextBox1.TabIndex = 12;
 			this.richTextBox1.Text = "";
 			// 
@@ -391,10 +381,8 @@
 			this.tabPage2.Controls.Add(this.richTextBox2);
 			this.tabPage2.Controls.Add(this.label6);
 			this.tabPage2.Controls.Add(this.button1);
-			this.tabPage2.Controls.Add(this.nnTypeComboBox);
 			this.tabPage2.Controls.Add(this.textBox4);
 			this.tabPage2.Controls.Add(this.label7);
-			this.tabPage2.Controls.Add(this.label10);
 			this.tabPage2.Controls.Add(this.pictureBox1);
 			this.tabPage2.Location = new System.Drawing.Point(4, 22);
 			this.tabPage2.Name = "tabPage2";
@@ -403,6 +391,17 @@
 			this.tabPage2.TabIndex = 1;
 			this.tabPage2.Text = "Recognition";
 			this.tabPage2.UseVisualStyleBackColor = true;
+			// 
+			// label23
+			// 
+			this.label23.AutoSize = true;
+			this.label23.Cursor = System.Windows.Forms.Cursors.Hand;
+			this.label23.Location = new System.Drawing.Point(161, 242);
+			this.label23.Name = "label23";
+			this.label23.Size = new System.Drawing.Size(51, 13);
+			this.label23.TabIndex = 30;
+			this.label23.Text = "Browse...";
+			this.label23.Click += new System.EventHandler(this.Label23_Click);
 			// 
 			// label19
 			// 
@@ -426,7 +425,7 @@
 			// 
 			// button5
 			// 
-			this.button5.Location = new System.Drawing.Point(289, 79);
+			this.button5.Location = new System.Drawing.Point(289, 29);
 			this.button5.Name = "button5";
 			this.button5.Size = new System.Drawing.Size(60, 20);
 			this.button5.TabIndex = 27;
@@ -437,7 +436,7 @@
 			// label12
 			// 
 			this.label12.AutoSize = true;
-			this.label12.Location = new System.Drawing.Point(28, 159);
+			this.label12.Location = new System.Drawing.Point(28, 111);
 			this.label12.Name = "label12";
 			this.label12.Size = new System.Drawing.Size(39, 13);
 			this.label12.TabIndex = 26;
@@ -446,7 +445,7 @@
 			// label8
 			// 
 			this.label8.AutoSize = true;
-			this.label8.Location = new System.Drawing.Point(28, 109);
+			this.label8.Location = new System.Drawing.Point(28, 59);
 			this.label8.Name = "label8";
 			this.label8.Size = new System.Drawing.Size(89, 13);
 			this.label8.TabIndex = 25;
@@ -456,7 +455,7 @@
 			// 
 			this.comboBox2.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.comboBox2.FormattingEnabled = true;
-			this.comboBox2.Location = new System.Drawing.Point(29, 125);
+			this.comboBox2.Location = new System.Drawing.Point(29, 75);
 			this.comboBox2.Name = "comboBox2";
 			this.comboBox2.Size = new System.Drawing.Size(320, 21);
 			this.comboBox2.TabIndex = 24;
@@ -484,7 +483,7 @@
 			// 
 			// textBox4
 			// 
-			this.textBox4.Location = new System.Drawing.Point(29, 79);
+			this.textBox4.Location = new System.Drawing.Point(29, 29);
 			this.textBox4.Name = "textBox4";
 			this.textBox4.Size = new System.Drawing.Size(254, 20);
 			this.textBox4.TabIndex = 20;
@@ -493,20 +492,11 @@
 			// label7
 			// 
 			this.label7.AutoSize = true;
-			this.label7.Location = new System.Drawing.Point(26, 63);
+			this.label7.Location = new System.Drawing.Point(26, 13);
 			this.label7.Name = "label7";
 			this.label7.Size = new System.Drawing.Size(103, 13);
 			this.label7.TabIndex = 19;
 			this.label7.Text = "Trained Model Path:";
-			// 
-			// label10
-			// 
-			this.label10.AutoSize = true;
-			this.label10.Location = new System.Drawing.Point(26, 15);
-			this.label10.Name = "label10";
-			this.label10.Size = new System.Drawing.Size(111, 13);
-			this.label10.TabIndex = 12;
-			this.label10.Text = "Neural Network Type:";
 			// 
 			// label13
 			// 
@@ -599,16 +589,15 @@
 			this.panel1.Size = new System.Drawing.Size(906, 49);
 			this.panel1.TabIndex = 33;
 			// 
-			// label23
+			// button7
 			// 
-			this.label23.AutoSize = true;
-			this.label23.Cursor = System.Windows.Forms.Cursors.Hand;
-			this.label23.Location = new System.Drawing.Point(161, 288);
-			this.label23.Name = "label23";
-			this.label23.Size = new System.Drawing.Size(51, 13);
-			this.label23.TabIndex = 30;
-			this.label23.Text = "Browse...";
-			this.label23.Click += new System.EventHandler(this.Label23_Click);
+			this.button7.Location = new System.Drawing.Point(35, 329);
+			this.button7.Margin = new System.Windows.Forms.Padding(1);
+			this.button7.Name = "button7";
+			this.button7.Size = new System.Drawing.Size(299, 35);
+			this.button7.TabIndex = 32;
+			this.button7.Text = "Cancel";
+			this.button7.UseVisualStyleBackColor = true;
 			// 
 			// MainForm
 			// 
@@ -646,7 +635,6 @@
         #endregion
 
         private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.ComboBox nnTypeComboBox;
         private System.Windows.Forms.PictureBox pictureBox1;
 		private System.Windows.Forms.TabControl tabControl1;
 		private System.Windows.Forms.TabPage tabPage1;
@@ -665,7 +653,6 @@
 		private System.Windows.Forms.Label label6;
 		private System.Windows.Forms.TextBox textBox4;
 		private System.Windows.Forms.Label label7;
-		private System.Windows.Forms.Label label10;
 		private System.Windows.Forms.TextBox textBox5;
 		private System.Windows.Forms.Label label9;
 		private System.Windows.Forms.Label label11;
@@ -694,6 +681,7 @@
 		private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel2;
 		private System.Windows.Forms.Panel panel1;
 		private System.Windows.Forms.Label label23;
+		private System.Windows.Forms.Button button7;
 	}
 }
 
