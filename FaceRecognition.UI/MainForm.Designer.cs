@@ -76,6 +76,7 @@
 			this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
 			this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
 			this.panel1 = new System.Windows.Forms.Panel();
+			this.label23 = new System.Windows.Forms.Label();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
 			this.tabControl1.SuspendLayout();
 			this.tabPage0.SuspendLayout();
@@ -110,6 +111,8 @@
 			// pictureBox1
 			// 
 			this.pictureBox1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+			this.pictureBox1.Cursor = System.Windows.Forms.Cursors.Hand;
+			this.pictureBox1.InitialImage = null;
 			this.pictureBox1.Location = new System.Drawing.Point(29, 173);
 			this.pictureBox1.Margin = new System.Windows.Forms.Padding(1);
 			this.pictureBox1.Name = "pictureBox1";
@@ -142,14 +145,14 @@
 			this.tabPage0.Location = new System.Drawing.Point(4, 22);
 			this.tabPage0.Name = "tabPage0";
 			this.tabPage0.Padding = new System.Windows.Forms.Padding(3);
-			this.tabPage0.Size = new System.Drawing.Size(902, 503);
+			this.tabPage0.Size = new System.Drawing.Size(902, 474);
 			this.tabPage0.TabIndex = 2;
 			this.tabPage0.Text = "Login";
 			this.tabPage0.UseVisualStyleBackColor = true;
 			// 
 			// button6
 			// 
-			this.button6.Location = new System.Drawing.Point(325, 148);
+			this.button6.Location = new System.Drawing.Point(533, 246);
 			this.button6.Name = "button6";
 			this.button6.Size = new System.Drawing.Size(100, 23);
 			this.button6.TabIndex = 10;
@@ -159,7 +162,7 @@
 			// 
 			// textBox5
 			// 
-			this.textBox5.Location = new System.Drawing.Point(104, 73);
+			this.textBox5.Location = new System.Drawing.Point(312, 171);
 			this.textBox5.Name = "textBox5";
 			this.textBox5.Size = new System.Drawing.Size(321, 20);
 			this.textBox5.TabIndex = 5;
@@ -168,7 +171,7 @@
 			// label9
 			// 
 			this.label9.AutoSize = true;
-			this.label9.Location = new System.Drawing.Point(35, 76);
+			this.label9.Location = new System.Drawing.Point(243, 174);
 			this.label9.Name = "label9";
 			this.label9.Size = new System.Drawing.Size(63, 13);
 			this.label9.TabIndex = 7;
@@ -177,7 +180,7 @@
 			// textBox7
 			// 
 			this.textBox7.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.textBox7.Location = new System.Drawing.Point(104, 112);
+			this.textBox7.Location = new System.Drawing.Point(312, 210);
 			this.textBox7.Name = "textBox7";
 			this.textBox7.Size = new System.Drawing.Size(321, 20);
 			this.textBox7.TabIndex = 9;
@@ -187,7 +190,7 @@
 			// 
 			this.label11.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this.label11.AutoSize = true;
-			this.label11.Location = new System.Drawing.Point(59, 115);
+			this.label11.Location = new System.Drawing.Point(267, 213);
 			this.label11.Name = "label11";
 			this.label11.Size = new System.Drawing.Size(39, 13);
 			this.label11.TabIndex = 8;
@@ -214,7 +217,7 @@
 			this.tabPage1.Location = new System.Drawing.Point(4, 22);
 			this.tabPage1.Name = "tabPage1";
 			this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-			this.tabPage1.Size = new System.Drawing.Size(902, 503);
+			this.tabPage1.Size = new System.Drawing.Size(902, 474);
 			this.tabPage1.TabIndex = 0;
 			this.tabPage1.Text = "Training";
 			this.tabPage1.UseVisualStyleBackColor = true;
@@ -378,6 +381,7 @@
 			// 
 			// tabPage2
 			// 
+			this.tabPage2.Controls.Add(this.label23);
 			this.tabPage2.Controls.Add(this.label19);
 			this.tabPage2.Controls.Add(this.label20);
 			this.tabPage2.Controls.Add(this.button5);
@@ -595,6 +599,17 @@
 			this.panel1.Size = new System.Drawing.Size(906, 49);
 			this.panel1.TabIndex = 33;
 			// 
+			// label23
+			// 
+			this.label23.AutoSize = true;
+			this.label23.Cursor = System.Windows.Forms.Cursors.Hand;
+			this.label23.Location = new System.Drawing.Point(161, 288);
+			this.label23.Name = "label23";
+			this.label23.Size = new System.Drawing.Size(51, 13);
+			this.label23.TabIndex = 30;
+			this.label23.Text = "Browse...";
+			this.label23.Click += new System.EventHandler(this.Label23_Click);
+			// 
 			// MainForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -678,6 +693,7 @@
 		private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
 		private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel2;
 		private System.Windows.Forms.Panel panel1;
+		private System.Windows.Forms.Label label23;
 	}
 }
 

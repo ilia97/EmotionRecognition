@@ -261,18 +261,26 @@ namespace FaceRecognition.UI
 				return "Please specify existing trained model path.";
 			}
 
-			Func<string, string> fileValdiationFunc = file =>
+			Func<string, bool> fileExists = file => File.Exists(Path.Combine(this.trainedModelPath, file));
+
+			var errors = new List<string>();
+
+			if (!fileExists("model_emotion_map.json"))
 			{
-				return !File.Exists(Path.Combine(this.trainedModelPath, file))
-					? $"File '{file}' was not found in specified folder. Please select folder with trained model."
-					: string.Empty;
-			};
+				errors.Add("File 'model_emotion_map.json' was not found in specified folder.");
+			}
 
-			var errors = new[] { "model.hdf5", "model.json", "model_emotion_map.json", "model_weights.h5" }
-				.Select(f => fileValdiationFunc(f))
-				.Where(err => !string.IsNullOrEmpty(err));
+			bool isOpt1Valid = fileExists("model.hdf5");
+			bool isOpt2Valid = fileExists("model.json") && fileExists("model_weights.h5");
+			
+			if(!isOpt1Valid && !isOpt2Valid)
+			{
+				errors.Add("Trained model must be presented as 'model.hdf5' or 'model.json' and 'model_weights.h5'. None of options are satisfied.");
+			}
 
-			return string.Join(Environment.NewLine, errors);
+			return errors.Any()
+				? $"Specified folder is not valid due to errors:\n{string.Join(Environment.NewLine, errors)}"
+				: string.Empty;
 		}
 
 		private string GetImagePath(Image image)
@@ -283,6 +291,11 @@ namespace FaceRecognition.UI
 			}
 
 			string path = GetFullPath(imageToPredict);
+			var dir = new FileInfo(path).Directory;
+			if (dir != null && !dir.Exists)
+			{
+				dir.Create();
+			}
 
 			image.Save(path, ImageFormat.Png);
 
@@ -290,6 +303,16 @@ namespace FaceRecognition.UI
 		}
 
 		private void pictureBox1_Click(object sender, EventArgs e)
+		{
+			this.SelectRecognitionImage();
+		}
+
+		private void Label23_Click(object sender, EventArgs e)
+		{
+			this.SelectRecognitionImage();
+		}
+
+		private void SelectRecognitionImage()
 		{
 			using (OpenFileDialog dlg = new OpenFileDialog())
 			{
@@ -301,6 +324,7 @@ namespace FaceRecognition.UI
 					using (Image image = Image.FromFile(dlg.FileName))
 					{
 						pictureBox1.Image = new Bitmap(image, 320, 245);
+						label23.Visible = false;
 					}
 				}
 			}
