@@ -57,7 +57,8 @@ namespace FaceRecognition.UI
 			["anger, fear, disgust"]			= new[] { "anger", "fear", "disgust" },			  // "anger, fear, disgust",			// 
 			["calm, disgust, surprise"]			= new[] { "calm", "disgust", "surprise" },		  // "calm, disgust, surprise",        // 
 			["sadness, disgust, surprise"]		= new[] { "sadness", "disgust", "surprise" },	  // "sadness, disgust, surprise",		// 
-			["anger, happiness"]				= new[] { "anger", "happiness" }                  // "anger, happiness"				// 
+			["anger, happiness"]				= new[] { "anger", "happiness" },                  // "anger, happiness"				// 
+			["anger, fear, calm, sadness, happiness, surprise, disgust"] = new[] { "anger", "fear", "calm", "sadness", "happiness", "surprise", "disgust" }
 		};
 
 		// Prediction Info
@@ -260,7 +261,18 @@ namespace FaceRecognition.UI
 				return "Please specify existing trained model path.";
 			}
 
-			return string.Empty;
+			Func<string, string> fileValdiationFunc = file =>
+			{
+				return !File.Exists(Path.Combine(this.trainedModelPath, file))
+					? $"File '{file}' was not found in specified folder. Please select folder with trained model."
+					: string.Empty;
+			};
+
+			var errors = new[] { "model.hdf5", "model.json", "model_emotion_map.json", "model_weights.h5" }
+				.Select(f => fileValdiationFunc(f))
+				.Where(err => !string.IsNullOrEmpty(err));
+
+			return string.Join(Environment.NewLine, errors);
 		}
 
 		private string GetImagePath(Image image)
