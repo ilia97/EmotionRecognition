@@ -12,11 +12,11 @@ Corgradulations! You're ready to start.
 ## Usage
 Enter your name and group.
 
-The process of emotion recognition divides into two independent processes: nuaral network training and image prediction. For those processes you can see two tabs at the top of the window: `Training` and `Prediction`.
+The process of emotion recognition divides into two independent processes: nuaral network training and image prediction. For those processes you can see two tabs at the top of the window: `Training` and `Recognition`.
 
 On the `Training` tab you can create your own model based on the dataset you have chosen. You should select the neural network type, select the type of the dataset (csv file or image files from directory), enter the path to the dataset (path to csv file or path to your folder with images) and enter the path to an empty output folder. Image dataset folder should contain folders from the next list: anger, disgust, fear, happiness, sadness, surprise, calm. You don't need to have the full set of emotions, you can train your model on some subset.
 
-On the `Prediction` tab you can predict the emotion on the image. To do that you have to select the folder containing trained model, select the photo you would like to predict emotion of and select emotions subset you would like to predict from. Please, be sure that emotions subset is equal to emotions subset that the model was trained at.
+On the `Recognition` tab you can predict the emotion on the image. To do that you have to select the folder containing trained model, select the photo you would like to predict emotion of and select emotions subset you would like to predict from. Please, be sure that emotions subset is equal to emotions subset that the model was trained at.
 
 ## Requirements to Dataset
 You can find examples of datasets in **datasets** folder.
