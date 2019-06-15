@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
+using System.Management;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace FaceRecognition.BL
@@ -9,7 +11,7 @@ namespace FaceRecognition.BL
 	{
 		protected abstract string ScriptFilePath { get; }
 
-		public Task Train(string dataSourcePath, bool isCsv, bool isImageFolder, string outputModelPath, Action<string> outputWriter)
+		public Task Train(string dataSourcePath, bool isCsv, bool isImageFolder, string outputModelPath, Action<string> outputWriter, CancellationToken token)
 		{
 			string pythonPath = GetPythonExeFullPath();
 			string nnFilePath = this.GetNNScriptFullPath();
@@ -36,15 +38,17 @@ namespace FaceRecognition.BL
 					//input.WriteLine($"cd {GetFullPath(@"EmoPy-master\venv1\Scripts")}");
 					//input.WriteLine($"activate");
 					//input.WriteLine($"python {GetFullPath(@"EmoPy-master\EmoPy\examples\fermodel_example.py")}");
+					//input.WriteLine(cmd);
 					//input.WriteLine($"deactivate");
 
 					// ---- OPTION 2: global packages ----
 					input.WriteLine(cmd);
 				},
-				outputWriter);
+				outputWriter,
+				token);
 		}
 
-		public static Task Recognize(string trainedModelPath, string imagePath, string emotionsSubset, Action<string> outputWriter)
+		public static Task Recognize(string trainedModelPath, string imagePath, string emotionsSubset, Action<string> outputWriter, CancellationToken token)
 		{
 			string pythonPath = GetPythonExeFullPath();
 			string pathToFermodelExample = GetFermodelExampleFullPath();
@@ -66,10 +70,11 @@ namespace FaceRecognition.BL
 					// ---- OPTION 2: global packages ----
 					input.WriteLine(cmd);
 				},
-				outputWriter);
+				outputWriter,
+				token);
 		}
 
-		public static Task ExecuteCmdAsync(Action<StreamWriter> inputWriter, Action<string> outputWriter)
+		public static Task ExecuteCmdAsync(Action<StreamWriter> inputWriter, Action<string> outputWriter, CancellationToken token)
 		{
 			return Task.Run(() =>
 			{
@@ -94,18 +99,31 @@ namespace FaceRecognition.BL
 				p.StandardInput.Flush();
 				p.StandardInput.Close();
 
-				p.WaitForExit();
+				while (!p.HasExited)
+				{
+					if (token.IsCancellationRequested)
+					{
+						if (!p.HasExited)
+						{
+							KillProcessTree(p.Id);
+
+							token.ThrowIfCancellationRequested();
+						}
+					}
+				}
 			});
 		}
 
 		public static string GetPythonExeFullPath()
 		{
-			return Path.Combine(Environment.GetEnvironmentVariable("EMOPY_PYTHON_PATH") ?? "[ENV VARIABLE NOT SPECIFIED]", "python.exe"); // return "python";
+			return Path.Combine(Environment.GetEnvironmentVariable("EMOPY_PYTHON_PATH") ?? "[ENV VARIABLE NOT SPECIFIED]", "python.exe");
+			// return "python";
 		}
 
 		public static string GetEmoPyExamplesFolderFullPath()
 		{
-			return Path.Combine(Environment.GetEnvironmentVariable("EMOPY_PATH") ?? "[ENV VARIABLE NOT SPECIFIED]", "examples"); // GetFullPath(@"\EmoPy -master\EmoPy\examples\");
+			return Path.Combine(Environment.GetEnvironmentVariable("EMOPY_PATH") ?? "[ENV VARIABLE NOT SPECIFIED]", "examples");
+			// return GetFullPath(@"\EmoPy-master\EmoPy\examples\");
 		}
 
 		private static string GetFermodelExampleFullPath()
@@ -122,5 +140,30 @@ namespace FaceRecognition.BL
 		// {
 		// 	return Path.Combine(AppDomain.CurrentDomain.BaseDirectory, relativePath.TrimStart('\\', '/'));
 		// }
+
+		private static void KillProcessTree(int pid)
+		{
+			// Cannot close 'system idle process'.
+			if (pid == 0)
+			{
+				return;
+			}
+
+			ManagementObjectSearcher searcher = new ManagementObjectSearcher("Select * From Win32_Process Where ParentProcessID=" + pid);
+			ManagementObjectCollection moc = searcher.Get();
+			foreach (ManagementObject mo in moc)
+			{
+				KillProcessTree(Convert.ToInt32(mo["ProcessID"]));
+			}
+			try
+			{
+				Process proc = Process.GetProcessById(pid);
+				proc.Kill();
+			}
+			catch (ArgumentException)
+			{
+				// Process already exited.
+			}
+		}
 	}
 }

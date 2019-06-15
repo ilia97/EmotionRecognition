@@ -20,6 +20,8 @@ namespace FaceRecognition.UI
 		private TimeRecorder TrainingTimeRecorder;
 		private TimeRecorder RecognitionTimeRecorder;
 
+		private CancellationTokenSource TrainingTokenSource;
+
 		private readonly Dictionary<NeuralNetworkType, NeuaralNetworkStrategy> recognitionAlgorithms = new Dictionary<NeuralNetworkType, NeuaralNetworkStrategy>()
 		{
 			{ NeuralNetworkType.Convolutional, new ConvolutionalNNStrategy() },
@@ -160,16 +162,45 @@ namespace FaceRecognition.UI
 			this.TrainingOutputWriter.Clear();
 			this.TrainingTimeRecorder.Start();
 			this.TrainingOutputWriter.AddLine("---------- TRAINING STARTED ----------");
-			await recognitionAlgorithms[(NeuralNetworkType)selectedNeuralNetwork.Value].Train(
-				this.dataSourcePath,
-				this.isCsvDataSource,
-				this.isImageFolderDataSource,
-				this.outputModelPath,
-				line => this.TrainingOutputWriter.AddLine(line));
 
-			this.TrainingOutputWriter.AddLine("---------- TRAINING FINISHED ----------");
+			this.TrainingTokenSource = new CancellationTokenSource();
+			this.button7.Enabled = true;
+
+			try
+			{
+				await recognitionAlgorithms[(NeuralNetworkType)selectedNeuralNetwork.Value].Train(
+					this.dataSourcePath,
+					this.isCsvDataSource,
+					this.isImageFolderDataSource,
+					this.outputModelPath,
+					line => this.TrainingOutputWriter.AddLine(line),
+					this.TrainingTokenSource.Token);
+
+				this.TrainingOutputWriter.AddLine("---------- TRAINING FINISHED ----------");
+			}
+			catch (OperationCanceledException ex)
+			{
+				this.TrainingOutputWriter.AddLine("---------- TRAINING CANCELED ----------");
+			}
+			finally
+			{
+				this.button7.Enabled = false;
+				var ts = this.TrainingTokenSource;
+				this.TrainingTokenSource = null;
+				ts.Dispose();
+			}
+
 			this.TrainingTimeRecorder.Stop();
 			this.button2.Enabled = true;
+		}
+
+		private void Button7_Click(object sender, EventArgs e)
+		{
+			if(this.TrainingTokenSource != null)
+			{
+				this.button7.Enabled = false;
+				this.TrainingTokenSource.Cancel();
+			}
 		}
 
 		private bool IsDataSourceExist()
@@ -229,7 +260,8 @@ namespace FaceRecognition.UI
 				this.trainedModelPath,
 				imagePath,
 				selectedEmotionsSubset.Value as string,
-				line => this.RecognitionOutputWriter.AddLine(line));
+				line => this.RecognitionOutputWriter.AddLine(line),
+				new CancellationTokenSource().Token);
 
 			this.RecognitionOutputWriter.AddLine("---------- RECOGNITION FINISHED ----------");
 			this.RecognitionTimeRecorder.Stop();
