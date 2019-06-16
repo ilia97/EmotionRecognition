@@ -1,0 +1,1 @@
+powershell -Command "Start-Process _64.cmd %CD% -Verb RunAs"
