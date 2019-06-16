@@ -9,6 +9,13 @@ Windows 8 or higher.
 
 Corgradulations! You're ready to start.
 
+## Installation notes
+During the installation, the isolated local Python 3.6.6 interpreter is installed as well application and its dependencies. The application installation directory is `%LocalAppData%\emotion-recognition\dist`
+
+When the installation has been completed successfully, 2 items are created on the user's Desktop:
+- **Emotion recongition.cmd** runnable file to run the application.
+- **Emotion recognition model** directory containing the prepared dataset and model.
+
 ## Usage
 Enter your name and group.
 
